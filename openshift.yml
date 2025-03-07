@@ -1,0 +1,28 @@
+---
+- name: Restart OpenShift Pod
+  hosts: localhost
+  gather_facts: no
+
+  vars:
+    openshift_project_name: dheeraj-joria-dev
+    pod_name: mypod
+
+  tasks:
+    - name: Log in to OpenShift
+      command: >
+        oc login https://api.example.openshift.com
+        --token=my-token
+
+    - name: Switch to the target OpenShift project
+      command: oc project {{ openshift_project_name }}
+
+    - name: Restart the pod by deleting it
+      command: oc delete pod {{ pod_name }}
+
+    - name: Wait for pod to be recreated and running
+      shell: |
+        oc get pods -n {{ openshift_project_name }} --no-headers | grep {{ pod_name }} | grep Running
+      register: pod_status
+      retries: 10
+      delay: 10
+      until: pod_status.rc == 0
