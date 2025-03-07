@@ -9,9 +9,9 @@
 
   tasks:
     - name: Log in to OpenShift
-      command: >
-        oc login https://api.example.openshift.com
-        --token=my-token
+      command: > 
+        oc login --token=sha256~4vaigqmSV6BzWt8SULtHJBWsL7FJNC-xBsPpldGAea8 --server=https://api.rm1.0a51.p1.openshiftapps.com:6443
+        
 
     - name: Switch to the target OpenShift project
       command: oc project {{ openshift_project_name }}
