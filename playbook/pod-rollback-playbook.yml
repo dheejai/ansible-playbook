@@ -1,0 +1,32 @@
+---
+- name: Rollout OpenShift Pods
+  hosts: localhost
+
+  vars:
+    namespace: dheeraj-joria-dev
+    openshift_api_url: https://api.rm1.0a51.p1.openshiftapps.com:6443
+    openshift_token: sha256~PK0tbTuddNAz94yw_bCw7uBguQeRiBVvhs3qLkXKQd8
+    deployment_name: mytest
+
+
+
+  tasks:
+    - name: Log in to OpenShift
+      shell: ./oc.exe login --server={{ openshift_api_url }} --token={{ openshift_token }}
+      register: login_result
+
+    - name: Verify Login
+      debug:
+        msg: "{{ login_result.stdout }}"
+        
+    - name: Rollout a Deployment
+      shell: ./oc.exe rollout restart deployment/{{ deployment_name }} -n {{ namespace }}
+      register: rollout_result
+
+    - name: Check Rollout Status
+      shell: ./oc.exe rollout status deployment/{{ deployment_name }} -n {{ namespace }}
+      register: status_result
+
+    - name: Output Rollout Status
+      debug:
+        msg: "{{ status_result.stdout }}"
