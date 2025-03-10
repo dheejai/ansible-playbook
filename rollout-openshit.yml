@@ -30,4 +30,5 @@
     - name: Output Rollout Status
       debug:
         msg: "{{ status_result.stdout }}"
+        ####
 
