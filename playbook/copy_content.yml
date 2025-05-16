@@ -1,5 +1,5 @@
 - name: copy to destination 
-  hosts: servera
+  hosts: servera.lab.example.com
   become: true
   tasks:
     - name: copy content  in a file which doesn't exists
