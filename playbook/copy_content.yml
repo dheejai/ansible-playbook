@@ -1,0 +1,8 @@
+- name: copy to destination 
+  hosts: servera
+  become: true
+  tasks:
+    - name: copy content  in a file which doesn't exists
+      copy:
+        content : "this is file for copy content via ansible playbook"
+        dest: /home/student/exam364.txt
